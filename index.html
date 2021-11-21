@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Bike!</title><!---注意擺放Css>JS--->
+	<meta name="viewport" content="width=device-width,initial-scale=1.0, shrink-to-fit=no"><!--RWD-->
+	<!--BS4-->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<link rel="stylesheet" href="css/bike.css">
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCdy4lYtqtF5RWHKZNOUPCIsw-Cmykabg0&callback=initMap&v=weekly" async></script>	
+	<script src="js/all.js"></script>
+</head>
+<body>
+	<div id="app">
+		<div class="form">
+			<a class="btn btn-main" href="#">租車/還車</a>
+			<a class="btn btn-main" href="#">騎乘紀錄</a>
+		</div>
+		<div class="icon"><img src="./img/Ellipse 15.png" alt=""></div>
+		<div class="icon-zoomIn">+</div>
+		<div class="icon-zoomOut">-</div>
+		<div id="map"></div>
+
+
+	</div>
+
+
+	<script src="js/vue.js"></script>	<!---Vue.js--->
+</body>
+<script>
+
+
+
+
+
+</script>
+<script>
+	var app = new Vue({
+		el:"#app",
+		data:{
+			bikeData:JSON.parse(localStorage.getItem('bikeData'))||[],
+			bikeStation:JSON.parse(localStorage.getItem('bikeStation'))||[],
+		},
+		mounted(){//自動呼叫
+			this.getAPI();
+		
+		},
+		methods:{
+			getAPI(){
+				const url=`https://ptx.transportdata.tw/MOTC/v2/Bike/Station/Tainan?$top=30&$format=JSON`;
+				const myHeaders = new Headers(); 
+				//myHeaders.append('Authorization','Bearer TokenNum');如有需要再看看
+					return fetch(url,{
+						method:'GET',
+						headers:myHeaders,
+					})
+					.then(response=>response.json())
+					.then((result)=>{
+						console.log(result);
+						this.bikeData=result;
+						localStorage.setItem('bikeData',JSON.stringify(this.bikeData));
+						console.log(this.bikeData)
+					})
+					.catch((error)=>{
+						console.log(error)
+					})
+			},
+		
+
+		},//end of methods
+		computed:{
+			
+		}
+
+
+	})
+</script>
+
+</html>
+
